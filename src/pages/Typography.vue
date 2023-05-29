@@ -21,6 +21,7 @@
     <span class="text-weight-bold">Lorem aliquip ipsum eiusmod consequat dolore nisi cupidatat anim.</span>
     <span class="text-weight-bolder">Irure magna enim cillum dolor officia proident veniam aliquip pariatur sunt commodo magna ipsum.</span>
 
+    <q-btn color="primary" label="Open menu" class="q-mt-md"/>
   </q-page>
 </template>
 
