@@ -12,29 +12,36 @@
           <q-input
             filled
             type="email"
-            v-model="name"
+            v-model="userForm.email"
             label="Email *"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+            :rules="[ val => val && val.length > 0 || 'The field must be filled',
+              isValidEmail
+            ]"
           />
 
           <q-input
             filled
             type="password"
-            v-model="age"
+            v-model="userForm.password"
             label="Password *"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+            :rules="[ val => val && val.length > 0 || 'The field must be filled']"
           />
 
           <q-input
             filled
             type="password"
-            v-model="age"
+            v-model="userForm.password_confirmation"
             label="Repeat password *"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || 'El campo es obligatorio']"
+            :rules="[ val => val && val.length > 0 || 'The field must be filled',
+              isSamePassword
+            ]"
           />
+
+          <q-checkbox right-label v-model="userForm.conditions" label="Terms and Conditions"
+            :style="userForm.errorInConditions && !userForm.conditions && 'color:red'" />
 
           <div class="row justify-end">
             <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
@@ -51,5 +58,43 @@ import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: "FormsPage",
+  setup(){
+
+    const userForm = ref({
+      email: '',
+      password: '',
+      password_confirmation: '',
+      conditions: false,
+      errorInConditions: false
+    })
+
+    return{
+      userForm,
+      onSubmit(){
+        userForm.value.errorInConditions = false
+        if(!userForm.value.conditions){
+          userForm.value.errorInConditions = true
+          return
+        }
+        console.log(userForm.value)
+      },
+      onReset(){
+        userForm.value = {
+          email: '',
+          password: '',
+          password_confirmation: '',
+          conditions: false,
+          errorInConditions: false
+        }
+      },
+      isValidEmail( val ) {
+          const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+          return emailPattern.test(val) || 'El correo no parece ser válido';
+      },
+      isSamePassword(val){
+        return (val === userForm.value.password) || 'The password is not the same'
+      }
+    }
+  }
 });
 </script>
