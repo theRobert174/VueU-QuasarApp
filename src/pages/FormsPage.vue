@@ -44,7 +44,7 @@
             :style="userForm.errorInConditions && !userForm.conditions && 'color:red'" />
 
           <div class="row justify-end">
-            <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+            <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm"/>
             <q-btn unelevated label="Submit" type="submit" color="primary"/>
           </div>
         </q-form>
@@ -60,6 +60,10 @@ export default defineComponent({
   name: "FormsPage",
   setup(){
 
+    const $q = useQuasar()
+
+
+
     const userForm = ref({
       email: '',
       password: '',
@@ -73,6 +77,11 @@ export default defineComponent({
       onSubmit(){
         userForm.value.errorInConditions = false
         if(!userForm.value.conditions){
+          $q.notify({
+            type: 'negative',
+            message: 'Please accept the terms and conditions',
+            color: 'red'
+          })
           userForm.value.errorInConditions = true
           return
         }
@@ -93,7 +102,7 @@ export default defineComponent({
       },
       isSamePassword(val){
         return (val === userForm.value.password) || 'The password is not the same'
-      }
+      },
     }
   }
 });
